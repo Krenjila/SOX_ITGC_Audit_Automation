@@ -19,6 +19,7 @@ def run_tests(csv_path, db_path):
             FROM users
             WHERE status = 'Terminated'
             AND last_login > termination_date
+            AND termination_date >= date('now', '-730 days')
         """,
         "Ghost Accounts": """
             SELECT 
@@ -45,7 +46,3 @@ def run_tests(csv_path, db_path):
 
     print(f"\nTotal findings: {sum(len(v) for v in findings.values())}")
     conn.close()
-    return findings
-
-if __name__ == "__main__":
-    findings = run_tests("../data/users.csv", "../data/sox_findings.db")
